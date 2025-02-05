@@ -8,6 +8,7 @@ module com.idk.demo {
     requires net.synedra.validatorfx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires java.sql;
 
     opens com.idk.demo to javafx.fxml;
     exports com.idk.demo;
