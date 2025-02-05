@@ -1,10 +1,10 @@
-//package com.idk.demo.Databases;
+//package com.idk.demo.Models.Databases;
 //import java.sql.Connection;
 //import java.sql.PreparedStatement;
 //import java.sql.SQLException;
 //import java.sql.Statement;
 //
-//import static com.idk.demo.Databases.DatabaseConnection.connect;
+//import static com.idk.demo.Models.Databases.DatabaseConnection.connect;
 //
 //
 //public class InsertRow {
@@ -58,13 +58,11 @@
 //}
 //
 
-package com.idk.demo.Databases;
+package com.idk.demo.Models.Databases;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
-import static com.idk.demo.Databases.DatabaseConnection.connect;
+import static com.idk.demo.Models.Databases.DatabaseConnection.connect;
 
 public class InsertRow {
 
@@ -106,18 +104,38 @@ public class InsertRow {
         }
     }
 
-    public static void insertEventRow(int clientID, String eventName, String mainArtist, String supportingArtist, String eventType, int audienceSize, String category) {
-        String sql = "INSERT INTO events (clientID, eventName, mainArtist, supportingArtist, eventType, audienceSize, category) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public static void insertEventRow(String clientName,
+                                      String eventName,
+                                      String mainArtist,
+                                      String date,
+                                      String time,
+                                      int duration,
+                                      int audienceSize,
+                                      String type,
+                                      String category) {
+        String sql = "INSERT INTO events " +
+                "(clientName, " +
+                "eventName, " +
+                "mainArtist, " +
+                "date, " +
+                "time, " +
+                "duration, " +
+                "audienceSize, " +
+                "type, " +
+                "category) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, clientID);
+            stmt.setString(1, clientName);
             stmt.setString(2, eventName);
             stmt.setString(3, mainArtist);
-            stmt.setString(4, supportingArtist);
-            stmt.setString(5, eventType);
-            stmt.setInt(6, audienceSize);
-            stmt.setString(7, category);
+            stmt.setString(4, date);
+            stmt.setString(5, time);
+            stmt.setInt(6, duration);
+            stmt.setInt(7, audienceSize);
+            stmt.setString(8, type);
+            stmt.setString(9, category);
 
             stmt.executeUpdate();
             System.out.println("Event successfully added.");
@@ -172,8 +190,13 @@ public class InsertRow {
     public static void main(String[] args) {
         // Insert test data
         insertUserRow("TESfT", "TEST", "Manager");
+        insertUserRow("TESsfT", "TEST", "Manager");
+        insertUserRow("TESafT", "TEST", "Manager");
+        insertUserRow("TESdfT", "TEST", "Manager");
+
         insertClientRow("Calient A");
-        insertEventRow(1, "Music Fesat", "Main Artifst", "Supporting Artist", "Concert", 5000, "Entertainment");
+        insertEventRow("Jeff", "Music aasas", "Jackson Browne", "09/01/2003",
+                "12pm", 3, 3333, "Indoor", "Live");
         insertVenueRow("Grand Hfall", 1000, "Concesrts", "Entertainment", 5000.00f);
         insertVenueAvailabilityRow(1, "2025-02-10", "18:00:00");
     }

@@ -1,14 +1,14 @@
-package com.idk.demo.Databases;
+package com.idk.demo.Models.Databases;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static com.idk.demo.Databases.DatabaseConnection.connect;
+import static com.idk.demo.Models.Databases.DatabaseConnection.connect;
 
-public class ClearTables {
-    // clear a table if it doesn't exist
-    public static void clearUsersTable() {
+public class CreateTables {
+    // Create a table if it doesn't exist
+    public static void createUsersTable() {
 
         String sql = "CREATE TABLE IF NOT EXISTS users ("
                 + "userID INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -17,21 +17,23 @@ public class ClearTables {
                 + "position TEXT NOT NULL"
                 + ");";
         //Always have a manager in the user
-        String sqli = "INSERT INTO users (username, password, position) VALUES (\"Vichie\", \"bbb\", \"Manager\")";
+        String sqli = "INSERT INTO users (username, password, position) VALUES (\"Vischie\", \"bbsb\", \"Manager\")";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
-            stmt.execute("Drop table if exists users;");
             stmt.execute(sql);
             stmt.executeUpdate(sqli);
 
-            System.out.println("Table cleard successfully.");
+            System.out.println("User created successfully.");
         } catch (SQLException e) {
-            System.out.println("Table creation failed: " + e.getMessage());
+            if (e.getErrorCode() == 19) {
+                System.out.println("User failed: User already exists!");
+            } else {
+                System.out.println("User creation failed: " + e.getMessage());            }
         }
     }
 
-    public static void clearClientsTable() {
+    public static void createClientsTable() {
 
         String sql = "CREATE TABLE IF NOT EXISTS clients ("
                 + "clientID INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -40,41 +42,43 @@ public class ClearTables {
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
-            stmt.execute("Drop table if exists clients;");
+//            stmt.execute("Drop table if exists users;");
             stmt.execute(sql);
-            System.out.println("Table cleared successfully.");
+            System.out.println("Clients created successfully.");
         } catch (SQLException e) {
-            System.out.println("Table creation failed: " + e.getMessage());
+            System.out.println("Clients creation failed: " + e.getMessage());
         }
 
 
     }
 
-    public static void clearEventsTable() {
+    public static void createEventsTable() {
 
         String sql = "CREATE TABLE IF NOT EXISTS events ("
                 + "eventID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "clientID INTEGER NOT NULL, "
+                + "clientName TEXT UNIQUE NOT NULL, "
                 + "eventName TEXT UNIQUE NOT NULL, "
                 + "mainArtist TEXT NOT NULL, "
-                + "supportingArtist TEXT NOT NULL, "
-                + "eventType TEXT NOT NULL, "
+                + "date TEXT NOT NULL, "
+                + "time TEXT NOT NULL, "
+                + "duration INTEGER NOT NULL, "
                 + "audienceSize INTEGER NOT NULL, "
+                + "type TEXT NOT NULL, "
                 + "category TEXT NOT NULL "
 //                + "FOREIGN KEY (clientID) REFERENCES clients(clientID) ON DELETE CASCADE"
                 + ");";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
-            stmt.execute("Drop table if exists events;");
+//            stmt.execute("Drop table if exists users;");
             stmt.execute(sql);
-            System.out.println("Events Table cleard successfully.");
+            System.out.println("Events Table created successfully.");
         } catch (SQLException e) {
-            System.out.println("Table creation failed: " + e.getMessage());
+            System.out.println("Events creation failed: " + e.getMessage());
         }
     }
 
-    public static void clearVenuesTable() {
+    public static void createVenuesTable() {
 
         String sql = "CREATE TABLE IF NOT EXISTS venues ("
                 + "venueID INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -87,15 +91,15 @@ public class ClearTables {
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
-            stmt.execute("Drop table if exists venues;");
+//            stmt.execute("Drop table if exists users;");
             stmt.execute(sql);
-            System.out.println("Venues Table cleard successfully.");
+            System.out.println("Venues Table created successfully.");
         } catch (SQLException e) {
-            System.out.println("Table creation failed: " + e.getMessage());
+            System.out.println("Venue creation failed: " + e.getMessage());
         }
     }
 
-    public static void clearVenuesAvailabilityTable() {
+    public static void createVenuesAvailabilityTable() {
 
         String sql = "CREATE TABLE IF NOT EXISTS venuesAvaliability ("
                 + "bookingID INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -106,22 +110,20 @@ public class ClearTables {
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
-            stmt.execute("Drop table if exists venuesAvaliability;");
+//            stmt.execute("Drop table if exists users;");
             stmt.execute(sql);
-            System.out.println("Venues Avaliability Table cleard successfully.");
+            System.out.println("Venues Availability Table created successfully.");
         } catch (SQLException e) {
-            System.out.println("Table creation failed: " + e.getMessage());
+            System.out.println("Availability creation failed: " + e.getMessage());
         }
     }
 
-
-
     public static void main(String[] args) {
-        clearUsersTable();
-        clearClientsTable();
-        clearEventsTable();
-        clearVenuesTable();
-        clearVenuesAvailabilityTable();
+        createUsersTable();
+        createClientsTable();
+        createEventsTable();
+        createVenuesTable();
+        createVenuesAvailabilityTable();
 
         //book
         //order
