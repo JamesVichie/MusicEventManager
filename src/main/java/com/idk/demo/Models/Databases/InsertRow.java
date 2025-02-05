@@ -192,7 +192,7 @@ public class InsertRow {
         insertUserRow("TESfT", "TEST", "Manager");
         insertUserRow("TESsfT", "TEST", "Manager");
         insertUserRow("TESafT", "TEST", "Manager");
-        insertUserRow("TESdfT", "TEST", "Manager");
+        insertUserRow("TESdfT", "TEST", "ddd");
 
         insertClientRow("Calient A");
         insertEventRow("Jeff", "Music aasas", "Jackson Browne", "09/01/2003",

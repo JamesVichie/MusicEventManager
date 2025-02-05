@@ -17,7 +17,7 @@ public class ClearTables {
                 + "position TEXT NOT NULL"
                 + ");";
         //Always have a manager in the user
-        String sqli = "INSERT INTO users (username, password, position) VALUES (\"Vichie\", \"bbb\", \"Manager\")";
+        String sqli = "INSERT INTO users (username, password, position) VALUES (\"Vichie\", \"a\", \"Manager\")";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {

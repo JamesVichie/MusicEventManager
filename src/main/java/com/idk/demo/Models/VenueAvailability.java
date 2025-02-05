@@ -1,6 +1,6 @@
 package com.idk.demo.Models;
 
-class VenueAvailability {
+public class VenueAvailability {
     private int bookingID;
     private int venueID;
     private String date;
@@ -30,6 +30,16 @@ class VenueAvailability {
     }
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "VenueAvailability{" +
+                "bookingID=" + bookingID +
+                ", venueID=" + venueID +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                '}';
     }
 
 }

@@ -1,6 +1,6 @@
 package com.idk.demo.Models;
 
-class Venues {
+public class Venues {
     private int venueID;
     private String venueName;
     private int capacity;
@@ -52,5 +52,17 @@ class Venues {
 
     public void setVenueName(String venueName) {
         this.venueName = venueName;
+    }
+
+    @Override
+    public String toString() {
+        return "Venue{" +
+                "venueID=" + venueID +
+                ", venueName='" + venueName + '\'' +
+                ", capacity=" + capacity +
+                ", suitable='" + suitable + '\'' +
+                ", category='" + category + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

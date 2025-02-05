@@ -4,33 +4,32 @@ import java.sql.Time;
 import java.text.DateFormat;
 
 public class Events {
-    private int clientID;
+    private String clientName;
     private String eventName;
     private String mainArtist;
-    private String supportingArtist;
-    private DateFormat date;
-    private Time time;
+    private String date;
+    private String time;
     private int duration;
     private int audienceSize;
-    private String eventType;
+    private String type;
     private String category;
 
-    public Events(int clientID, String eventName, String mainArtist, String supportingArtist,
-                  DateFormat date, Time time, int duration, int audienceSize, String eventType, String category) {
-        this.clientID = clientID;
+    // Constructor
+    public Events(String clientName, String eventName, String mainArtist, String date, String time, int duration, int audienceSize, String type, String category) {
+        this.clientName = clientName;
         this.eventName = eventName;
         this.mainArtist = mainArtist;
-        this.supportingArtist = supportingArtist;
         this.date = date;
         this.time = time;
         this.duration = duration;
         this.audienceSize = audienceSize;
-        this.eventType = eventType;
+        this.type = type;
         this.category = category;
     }
 
-    public int getClientID() {
-        return clientID;
+    // Getters
+    public String getClientName() {
+        return clientName;
     }
 
     public String getEventName() {
@@ -41,15 +40,11 @@ public class Events {
         return mainArtist;
     }
 
-    public String getSupportingArtist() {
-        return supportingArtist;
-    }
-
-    public DateFormat getDate() {
+    public String getDate() {
         return date;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 
@@ -61,12 +56,17 @@ public class Events {
         return audienceSize;
     }
 
-    public String getEventType() {
-        return eventType;
+    public String getType() {
+        return type;
     }
 
     public String getCategory() {
         return category;
+    }
+
+    // Setters
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public void setEventName(String eventName) {
@@ -77,15 +77,11 @@ public class Events {
         this.mainArtist = mainArtist;
     }
 
-    public void setSupportingArtist(String supportingArtist) {
-        this.supportingArtist = supportingArtist;
-    }
-
-    public void setDate(DateFormat date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
@@ -97,11 +93,25 @@ public class Events {
         this.audienceSize = audienceSize;
     }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setCategory(String category) {
         this.category = category;
+    }
+    @Override
+    public String toString() {
+        return "Event{" +
+                "clientName='" + clientName + '\'' +
+                ", eventName='" + eventName + '\'' +
+                ", mainArtist='" + mainArtist + '\'' +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", duration=" + duration +
+                ", audienceSize=" + audienceSize +
+                ", type='" + type + '\'' +
+                ", category='" + category + '\'' +
+                '}';
     }
 }

@@ -1,6 +1,6 @@
 package com.idk.demo.Models;
 
-class Clients {
+public class Clients {
     private int clientID;
     private String clientName;
 
@@ -19,5 +19,13 @@ class Clients {
 
     public void setClientName(String clientName) {
         this.clientName = clientName;
+    }
+
+    @Override
+    public String toString() {
+        return "Clients{" +
+                "clientID=" + clientID +
+                ", clientName='" + clientName + '\'' +
+                '}';
     }
 }
