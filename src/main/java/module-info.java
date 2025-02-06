@@ -10,6 +10,15 @@ module com.idk.demo {
     requires eu.hansolo.tilesfx;
     requires java.sql;
 
-    opens com.idk.demo to javafx.fxml;
+//    requires javafx.controls;
+//    requires javafx.fxml;
+
+    opens com.idk.demo.Controllers to javafx.fxml; // Allow FXML to access controllers
+
     exports com.idk.demo;
+    exports com.idk.demo.Controllers; // If other modules need access to controllers
+
+    opens com.idk.demo to javafx.fxml;
+
+//    exports com.idk.demo;
 }

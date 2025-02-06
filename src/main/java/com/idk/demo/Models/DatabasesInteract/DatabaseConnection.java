@@ -1,4 +1,4 @@
-package com.idk.demo.Models.Databases;
+package com.idk.demo.Models.DatabasesInteract;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -76,7 +76,7 @@
 //        ArrayList<Events> event = getEvents();
 //    }
 //}
-package com.idk.demo.Models.Databases;
+package com.idk.demo.Models.DatabasesInteract;
 
 import com.idk.demo.Models.Events;
 import com.idk.demo.Models.Users;
@@ -90,7 +90,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import static com.idk.demo.Models.Databases.DatabaseConnection.connect;
+import static com.idk.demo.Models.DatabasesInteract.DatabaseConnection.connect;
 
 public class GetTables {
     public static ArrayList<Users> getUsers() {

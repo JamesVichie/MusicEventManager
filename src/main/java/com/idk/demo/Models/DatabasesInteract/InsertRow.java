@@ -58,11 +58,11 @@
 //}
 //
 
-package com.idk.demo.Models.Databases;
+package com.idk.demo.Models.DatabasesInteract;
 
 import java.sql.*;
 
-import static com.idk.demo.Models.Databases.DatabaseConnection.connect;
+import static com.idk.demo.Models.DatabasesInteract.DatabaseConnection.connect;
 
 public class InsertRow {
 
