@@ -1,14 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.idk.demo.Controllers.ManagerHomepageController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="612.0" prefWidth="900.0" style="-fx-background-color: #777777;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.idk.demo.Controllers.ManagerHomepageController">
+   <children>
+      <ListView layoutX="31.0" layoutY="449.0" prefHeight="128.0" prefWidth="285.0" style="-fx-background-color: lightblue;" />
+      <ListView layoutX="31.0" layoutY="52.0" prefHeight="128.0" prefWidth="285.0" style="-fx-background-color: lightblue;" />
+      <ListView layoutX="31.0" layoutY="235.0" prefHeight="191.0" prefWidth="285.0" style="-fx-background-color: lightblue;" />
+      <Button fx:id="addAccountButton" layoutX="37.0" layoutY="389.0" mnemonicParsing="false" onAction="#OnAddAccount" text="Add Account" />
+      <Button layoutX="712.0" layoutY="23.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="93.0" text="Homepage" />
+      <Button layoutX="821.0" layoutY="23.0" mnemonicParsing="false" text="Signout" />
+      <Button fx:id="deleteButton" layoutX="46.0" layoutY="135.0" mnemonicParsing="false" onAction="#OnDeleteUsername" text="Delete Account" />
+      <Button fx:id="promoteButton" layoutX="41.0" layoutY="531.0" mnemonicParsing="false" onAction="#OnPromoteUsername" text="Promote Account" />
+      <Button layoutX="480.0" layoutY="453.0" mnemonicParsing="false" text="909?" />
+      <Button layoutX="414.0" layoutY="233.0" mnemonicParsing="false" text="Export Transactions" />
+      <Button layoutX="416.0" layoutY="274.0" mnemonicParsing="false" text="Import Transactions" />
+      <Button layoutX="418.0" layoutY="325.0" mnemonicParsing="false" text="Export Master Data" />
+      <Button layoutX="412.0" layoutY="365.0" mnemonicParsing="false" text="Import Mastser Data" />
+      <Button layoutX="416.0" layoutY="111.0" mnemonicParsing="false" text="View Pie Chart" />
+      <Button layoutX="415.0" layoutY="147.0" mnemonicParsing="false" text="View Column Chart" />
+      <Button layoutX="415.0" layoutY="76.0" mnemonicParsing="false" text="View Summary" />
+      <Label layoutX="33.0" layoutY="15.0" text="Hello, Manager! " textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="33.0" layoutY="235.0" prefHeight="20.0" prefWidth="149.0" text="ADD ACCOUNT:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="addUsernameTF" layoutX="142.0" layoutY="261.0" />
+      <TextField fx:id="addPasswordTF" layoutX="142.0" layoutY="302.0" />
+      <RadioButton fx:id="som" layoutX="206.0" layoutY="348.0" mnemonicParsing="false" text="Manager" />
+      <RadioButton fx:id="som" layoutX="143.0" layoutY="348.0" mnemonicParsing="false" text="Staff" />
+      <Label layoutX="34.0" layoutY="263.0" text="Username:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="34.0" layoutY="305.0" text="Password:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="37.0" layoutY="347.0" text="Position:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="deleteUsernameTF" layoutX="48.0" layoutY="101.0" promptText="username" />
+      <Label layoutX="50.0" layoutY="79.0" text="Username:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="48.0" layoutY="56.0" prefHeight="20.0" prefWidth="149.0" text="DELETE ACCOUNT:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="41.0" layoutY="456.0" prefHeight="20.0" prefWidth="149.0" text="PROMOTE ACCOUNT:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="478.0" text="Username:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="promoteUsernameTF" layoutX="41.0" layoutY="496.0" />
+   </children>
 </AnchorPane>

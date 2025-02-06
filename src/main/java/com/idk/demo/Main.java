@@ -1,6 +1,5 @@
 package com.idk.demo;
 
-//import com.idk.demo.Models.UserSession;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,8 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-//    UserSession userSession = null;
-
     @Override
     public void start(Stage stage) {
         try{
