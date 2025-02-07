@@ -2,10 +2,20 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #444444;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.idk.demo.Controllers.HomepageController">
    <children>
       <Button fx:id="signout" layoutX="528.0" layoutY="21.0" mnemonicParsing="false" onAction="#onSignout" text="Signout" />
       <Button fx:id="managerOptions" layoutX="386.0" layoutY="21.0" mnemonicParsing="false" onAction="#displayManagerMenu" prefHeight="25.0" prefWidth="132.0" text="Manager Options" />
+      <ListView fx:id="venueList" layoutX="41.0" layoutY="76.0" prefHeight="149.0" prefWidth="233.0" />
+      <Label layoutX="41.0" layoutY="46.0" text="Venues" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="addVentueButton" layoutX="41.0" layoutY="272.0" mnemonicParsing="false" onAction="#OnAddVenue" text="Add Venue" />
+      <TextField fx:id="searchVenueTF" layoutX="125.0" layoutY="44.0" promptText="Search" />
+      <ComboBox fx:id="venueFilterCategoryDL" layoutX="41.0" layoutY="237.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

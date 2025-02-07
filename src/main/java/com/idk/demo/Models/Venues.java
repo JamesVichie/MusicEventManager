@@ -17,6 +17,15 @@ public class Venues {
         this.price = price;
     }
 
+    public Venues(String venueName, int capacity, String suitable, String category, float price) {
+        this.venueName = venueName;
+        this.capacity = capacity;
+        this.suitable = suitable;
+        this.category = category;
+        this.price = price;
+    }
+
+    public void setVenueID(int venueID) {this.venueID = venueID;}
     public int getVenueID() {
         return venueID;
     }

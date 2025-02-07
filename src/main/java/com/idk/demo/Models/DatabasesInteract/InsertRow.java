@@ -197,7 +197,18 @@ public class InsertRow {
         insertClientRow("Calient A");
         insertEventRow("Jeff", "Music aasas", "Jackson Browne", "09/01/2003",
                 "12pm", 3, 3333, "Indoor", "Live");
-        insertVenueRow("Grand Hfall", 1000, "Concesrts", "Entertainment", 5000.00f);
+        insertVenueRow("xxx Hfall", 1000, "Concesrts", "Entertainment", 5000.00f);
+        insertVenueRow("www Hfall", 1000, "we", "wegw   e", 5000.00f);
+        insertVenueRow("qqqppp Hfall", 1000, "Concesrts", "Entertsssainment", 5000.00f);
+        insertVenueRow("fggg Hfall", 31000, "fsd", "Entertainment", 5000.00f);
+        insertVenueRow("jjjj Hfall", 1000, "Concdsfesrts", "xxx", 5000.00f);
+        insertVenueRow("jjjjasa Hfall", 1000, "Concdsfesrts", "Entertainment", 5000.00f);
+        insertVenueRow("d Hfall", 1000, "Concdsfesrts", "vvv", 5000.00f);
+        insertVenueRow("ssjjjj Hfall", 1000, "Concdsfesrts", "bbb", 5000.00f);
+        insertVenueRow("gggggg Hfall", 1000, "Concdsfesrts", "AAA", 5000.00f);
+
+
+
         insertVenueAvailabilityRow(1, "2025-02-10", "18:00:00");
     }
 }
