@@ -10,8 +10,8 @@
       <ListView layoutX="31.0" layoutY="52.0" prefHeight="128.0" prefWidth="285.0" style="-fx-background-color: lightblue;" />
       <ListView layoutX="31.0" layoutY="235.0" prefHeight="191.0" prefWidth="285.0" style="-fx-background-color: lightblue;" />
       <Button fx:id="addAccountButton" layoutX="37.0" layoutY="389.0" mnemonicParsing="false" onAction="#OnAddAccount" text="Add Account" />
-      <Button layoutX="712.0" layoutY="23.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="93.0" text="Homepage" />
-      <Button layoutX="821.0" layoutY="23.0" mnemonicParsing="false" text="Signout" />
+      <Button fx:id="displayHomepage" layoutX="712.0" layoutY="23.0" mnemonicParsing="false" onAction="#displayHomepage" prefHeight="25.0" prefWidth="93.0" text="Homepage" />
+      <Button fx:id="onSignout" layoutX="821.0" layoutY="23.0" mnemonicParsing="false" onAction="#onSignout" text="Signout" />
       <Button fx:id="deleteButton" layoutX="46.0" layoutY="135.0" mnemonicParsing="false" onAction="#OnDeleteUsername" text="Delete Account" />
       <Button fx:id="promoteButton" layoutX="41.0" layoutY="531.0" mnemonicParsing="false" onAction="#OnPromoteUsername" text="Promote Account" />
       <Button layoutX="480.0" layoutY="453.0" mnemonicParsing="false" text="909?" />
@@ -34,8 +34,11 @@
       </Label>
       <TextField fx:id="addUsernameTF" layoutX="142.0" layoutY="261.0" />
       <TextField fx:id="addPasswordTF" layoutX="142.0" layoutY="302.0" />
-      <RadioButton fx:id="som" layoutX="206.0" layoutY="348.0" mnemonicParsing="false" text="Manager" />
-      <RadioButton fx:id="som" layoutX="143.0" layoutY="348.0" mnemonicParsing="false" text="Staff" />
+      <RadioButton fx:id="mos" layoutX="206.0" layoutY="348.0" mnemonicParsing="false" text="Manager">
+         <toggleGroup>
+            <ToggleGroup fx:id="role" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="som" layoutX="143.0" layoutY="348.0" mnemonicParsing="false" text="Staff" toggleGroup="$role" />
       <Label layoutX="34.0" layoutY="263.0" text="Username:">
          <font>
             <Font name="System Bold" size="14.0" />
