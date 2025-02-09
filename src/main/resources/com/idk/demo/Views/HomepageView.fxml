@@ -17,5 +17,6 @@
       <Button fx:id="addVentueButton" layoutX="41.0" layoutY="272.0" mnemonicParsing="false" onAction="#OnAddVenue" text="Add Venue" />
       <TextField fx:id="searchVenueTF" layoutX="125.0" layoutY="44.0" promptText="Search" />
       <ComboBox fx:id="venueFilterCategoryDL" layoutX="41.0" layoutY="237.0" prefWidth="150.0" />
+      <Button fx:id="profileButton" layoutX="326.0" layoutY="21.0" mnemonicParsing="false" onAction="#onDisplayProfile" text="Profile" />
    </children>
 </AnchorPane>

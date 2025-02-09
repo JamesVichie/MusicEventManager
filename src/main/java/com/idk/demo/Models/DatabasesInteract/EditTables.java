@@ -23,4 +23,35 @@ public class EditTables {
             System.out.println(e.getMessage());
         }
     }
+
+    public static void updateUsername(String username, String newUsername){
+        String sql = "UPDATE users SET username = ? WHERE username = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, newUsername);
+            pstmt.setString(2, username);
+
+            pstmt.executeUpdate();
+            System.out.println("Username!! successfully updated.");
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public static void updatePassword(String username, String newPassword){
+        String sql = "UPDATE users SET password = ? WHERE username = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, username);
+
+            pstmt.executeUpdate();
+            System.out.println("Password successfully updated.");
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
 }

@@ -84,10 +84,7 @@ import com.idk.demo.Models.Clients;
 import com.idk.demo.Models.Venues;
 import com.idk.demo.Models.VenueAvailability;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 import static com.idk.demo.Models.DatabasesInteract.DatabaseConnection.connect;
@@ -198,6 +195,37 @@ public class GetTables {
             System.out.println("Table read failed: " + e.getMessage());
             return venueList;
         }
+    }
+
+    public static Venues getVenue(String venueName) {
+        String sql = "SELECT * FROM venues WHERE venueName = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, venueName);
+
+            try (ResultSet resultSet = pstmt.executeQuery()) {
+                if (resultSet.next()) {
+                    Venues venue = new Venues(
+                            resultSet.getInt("venueID"),
+                            resultSet.getString("venueName"),
+                            resultSet.getInt("capacity"),
+                            resultSet.getString("suitable"),
+                            resultSet.getString("category"),
+                            resultSet.getFloat("price")
+                    );
+                    System.out.println("Venue retrieved successfully: " + venue);
+                    return venue;
+                } else {
+                    System.out.println("No venue found with the name: " + venueName);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error fetching venue: " + e.getMessage());
+        }
+
+        return null;
     }
 
     public static ArrayList<VenueAvailability> getVenueAvailabilities() {
