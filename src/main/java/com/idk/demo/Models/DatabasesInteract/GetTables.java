@@ -145,6 +145,40 @@ public class GetTables {
         }
     }
 
+    public static Events getEvent(String eventName) {
+        String sql = "SELECT * FROM events WHERE eventName = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, eventName);
+
+            try (ResultSet resultSet = pstmt.executeQuery()) {
+                if (resultSet.next()) {
+                    Events event = new Events(
+                            resultSet.getString("clientName"),
+                            resultSet.getString("eventName"),
+                            resultSet.getString("mainArtist"),
+                            resultSet.getString("date"),
+                            resultSet.getString("time"),
+                            resultSet.getInt("duration"),
+                            resultSet.getInt("audienceSize"),
+                            resultSet.getString("type"),
+                            resultSet.getString("category")
+                    );
+                    System.out.println("Venue retrieved successfully: " + event);
+                    return event;
+                } else {
+                    System.out.println("No venue found with the name: " + eventName);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error fetching venue: " + e.getMessage());
+        }
+
+        return null;
+    }
+
     public static ArrayList<Clients> getClients() {
         String sql = "SELECT * FROM clients";
         ArrayList<Clients> clientList = new ArrayList<>();

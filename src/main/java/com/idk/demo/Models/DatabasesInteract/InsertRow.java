@@ -189,25 +189,46 @@ public class InsertRow {
 
     public static void main(String[] args) {
         // Insert test data
-        insertUserRow("TESfT", "TEST", "Manager");
-        insertUserRow("TESsfT", "TEST", "Manager");
-        insertUserRow("TESafT", "TEST", "Manager");
-        insertUserRow("TESdfT", "TEST", "ddd");
+        insertUserRow("Vichie", "Vichie", "Manager");
+        insertUserRow("q", "q", "Manager");
+        insertUserRow("w", "w", "Staff");
+        insertUserRow("z", "z", "Staff");
 
-        insertClientRow("Calient A");
-        insertEventRow("Jeff", "Music aasas", "Jackson Browne", "09/01/2003",
+        insertClientRow("Jack A");
+        insertClientRow("Peter B");
+        insertClientRow("Lucy C");
+        insertClientRow("Margret D");
+        insertClientRow("Bob E");
+        insertClientRow("Jess F");
+        insertEventRow("Jeff", "Music aasdqas", "Jackson Browne", "09/01/2003",
                 "12pm", 3, 3333, "Indoor", "Live");
-        insertVenueRow("xxx Hfall", 1000, "Concesrts", "Entertainment", 5000.00f);
-        insertVenueRow("www Hfall", 1000, "we", "wegw   e", 5000.00f);
-        insertVenueRow("qqqppp Hfall", 1000, "Concesrts", "Entertsssainment", 5000.00f);
-        insertVenueRow("fggg Hfall", 31000, "fsd", "Entertainment", 5000.00f);
-        insertVenueRow("jjjj Hfall", 1000, "Concdsfesrts", "xxx", 5000.00f);
-        insertVenueRow("jjjjasa Hfall", 1000, "Concdsfesrts", "Entertainment", 5000.00f);
-        insertVenueRow("d Hfall", 1000, "Concdsfesrts", "vvv", 5000.00f);
-        insertVenueRow("ssjjjj Hfall", 1000, "Concdsfesrts", "bbb", 5000.00f);
-        insertVenueRow("gggggg Hfall", 1000, "Concdsfesrts", "AAA", 5000.00f);
-
-
+        insertEventRow("Alice", "Art Expo", "Emma Watson", "10/05/2023",
+                "2pm", 5, 500, "Outdoor", "Exhibition");
+        insertEventRow("John", "Comedy Night", "Kevin Hart", "11/15/2023",
+                "7pm", 2, 200, "Indoor", "Comedy");
+        insertEventRow("Steve", "Tech Talk", "Elon Musk", "12/20/2023",
+                "4pm", 1, 1000, "Online", "Conference");
+        insertEventRow("Sarah", "Food Fest", "Gordon Ramsay", "01/10/2024",
+                "11am", 8, 3000, "Outdoor", "Festival");
+        insertEventRow("Linda", "Book Launch", "J.K. Rowling", "02/07/2024",
+                "3pm", 2, 150, "Indoor", "Literature");
+        insertEventRow("Mark", "Science Expo", "Neil deGrasse Tyson", "03/15/2024",
+                "10am", 6, 1200, "Outdoor", "Educational");
+        insertEventRow("Anna", "Fashion Show", "Gigi Hadid", "04/12/2024",
+                "5pm", 3, 700, "Indoor", "Fashion");
+        insertEventRow("David", "Gaming Championship", "Ninja", "05/20/2024",
+                "9am", 10, 5000, "Online", "Esports");
+        insertEventRow("Emily", "Opera Night", "Andrea Bocelli", "06/25/2024",
+                "7pm", 3, 800, "Indoor", "Music");
+        insertVenueRow("Sunset Arena", 5000, "Concerts", "Entertainment", 7500.00f);
+        insertVenueRow("Grand Hall", 3000, "Conferences", "Business", 6500.00f);
+        insertVenueRow("Riverside Pavilion", 2000, "Weddings", "Celebrations", 4000.00f);
+        insertVenueRow("Tech Hub Center", 10000, "Expos", "Technology", 12000.00f);
+        insertVenueRow("Eagle Stadium", 8000, "Sports", "Recreational", 9500.00f);
+        insertVenueRow("Cultural Auditorium", 1500, "Plays", "Arts", 3000.00f);
+        insertVenueRow("Oceanview Terrace", 1000, "Gatherings", "Social", 2000.00f);
+        insertVenueRow("Skyline Hall", 3500, "Seminars", "Education", 5000.00f);
+        insertVenueRow("Summit Center", 2500, "Workshops", "Professional", 4500.00f);
 
         insertVenueAvailabilityRow(1, "2025-02-10", "18:00:00");
     }

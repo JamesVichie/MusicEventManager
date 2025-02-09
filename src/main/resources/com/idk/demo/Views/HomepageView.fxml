@@ -2,21 +2,58 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #444444;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.idk.demo.Controllers.HomepageController">
+<AnchorPane prefHeight="429.0" prefWidth="602.0" style="-fx-background-color: #444444;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.idk.demo.Controllers.HomepageController">
    <children>
-      <Button fx:id="signout" layoutX="528.0" layoutY="21.0" mnemonicParsing="false" onAction="#onSignout" text="Signout" />
-      <Button fx:id="managerOptions" layoutX="386.0" layoutY="21.0" mnemonicParsing="false" onAction="#displayManagerMenu" prefHeight="25.0" prefWidth="132.0" text="Manager Options" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#5db4ff12" height="359.0" layoutX="311.0" layoutY="45.0" stroke="BLACK" strokeType="INSIDE" width="264.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#5db4ff12" height="371.0" layoutX="16.0" layoutY="34.0" stroke="BLACK" strokeType="INSIDE" width="282.0" />
+      <Button fx:id="signout" layoutX="530.0" layoutY="10.0" mnemonicParsing="false" onAction="#onSignout" text="Signout" />
+      <Button fx:id="managerOptions" layoutX="388.0" layoutY="10.0" mnemonicParsing="false" onAction="#displayManagerMenu" prefHeight="25.0" prefWidth="132.0" text="Manager Options" />
       <ListView fx:id="venueList" layoutX="41.0" layoutY="76.0" prefHeight="149.0" prefWidth="233.0" />
       <Label layoutX="41.0" layoutY="46.0" text="Venues" textFill="WHITE">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="addVentueButton" layoutX="41.0" layoutY="272.0" mnemonicParsing="false" onAction="#OnAddVenue" text="Add Venue" />
+      <Button fx:id="addVentueButton" layoutX="44.0" layoutY="367.0" mnemonicParsing="false" onAction="#OnAddVenue" text="Add Venue" />
       <TextField fx:id="searchVenueTF" layoutX="125.0" layoutY="44.0" promptText="Search" />
-      <ComboBox fx:id="venueFilterCategoryDL" layoutX="41.0" layoutY="237.0" prefWidth="150.0" />
-      <Button fx:id="profileButton" layoutX="326.0" layoutY="21.0" mnemonicParsing="false" onAction="#onDisplayProfile" text="Profile" />
+      <ComboBox fx:id="venueFilterCategoryDL" layoutX="44.0" layoutY="271.0" prefHeight="25.0" prefWidth="101.0" promptText="category" />
+      <Button fx:id="profileButton" layoutX="330.0" layoutY="10.0" mnemonicParsing="false" onAction="#onDisplayProfile" text="Profile" />
+      <Label layoutX="41.0" layoutY="225.0" text="Filter venues by:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="41.0" layoutY="245.0" text="Category:" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="166.0" layoutY="245.0" text="Capacity:" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="41.0" layoutY="307.0" text="Event Type:" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="166.0" layoutY="307.0" text="Avalability:" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="venueFilterEventType" layoutX="44.0" layoutY="327.0" prefHeight="25.0" prefWidth="101.0" promptText="event type" />
+      <ComboBox fx:id="venueFilterCapacity" layoutX="169.0" layoutY="271.0" prefHeight="25.0" prefWidth="108.0" promptText="capacity" />
+      <ComboBox fx:id="venueFilterAvalability" layoutX="169.0" layoutY="327.0" prefHeight="25.0" prefWidth="108.0" promptText="avalability" />
+      <ListView fx:id="eventList" layoutX="326.0" layoutY="76.0" prefHeight="149.0" prefWidth="233.0" />
+      <Label layoutX="326.0" layoutY="47.0" text="Events Requests" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
