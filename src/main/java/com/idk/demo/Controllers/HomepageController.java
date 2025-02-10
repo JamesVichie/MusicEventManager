@@ -46,7 +46,9 @@ public class HomepageController {
     @FXML
     private ComboBox<String> venueFilterCategoryDL;
     @FXML
-    private ComboBox<String> venueFilterCapacity;
+    private TextField venueFilterMin;
+    @FXML
+    private TextField venueFilterMax;
     @FXML
     private ComboBox<String> venueFilterEventType;
     @FXML
@@ -59,6 +61,8 @@ public class HomepageController {
     private ListView<String> eventList;
 
     public void initialize() {
+        setIntegerOnly(venueFilterMax);
+        setIntegerOnly(venueFilterMin);
 
         //EVENT LISRT
         ArrayList<Events> eventsAll = getEvents();
@@ -100,8 +104,6 @@ public class HomepageController {
             }
         });
 
-
-
         //VENUE LIST
         ArrayList<Venues> venuesAll = getVenues();
         ArrayList<String> venues = venuesAll.stream()
@@ -112,6 +114,13 @@ public class HomepageController {
                 .map(Venues::getCategory)
                 .collect(Collectors.toSet());
 
+        Set<String> eventTypes = getVenues().stream()
+                .map(Venues::getSuitable)
+                .collect(Collectors.toSet());
+
+        venueFilterEventType.getItems().add("All");
+        venueFilterEventType.getItems().addAll(eventTypes);
+
         venueFilterCategoryDL.getItems().add("All");
         venueFilterCategoryDL.getItems().addAll(categories);
         venueNames = FXCollections.observableArrayList(venues);
@@ -119,32 +128,53 @@ public class HomepageController {
         // Wrap in a FilteredList
         FilteredList<String> filteredList = new FilteredList<>(venueNames, s -> true);
 
-        // Add listener to TextField for filtering
         searchVenueTF.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredList.setPredicate(venue -> {
-                boolean matchesSearch = (newValue == null
-                        || newValue.isEmpty())
-                        || venue.toLowerCase().contains(newValue.toLowerCase())
-                        || getVenues().stream().anyMatch(v -> v.getCategory().equalsIgnoreCase(newValue) && v.getVenueName().equals(venue));
                 String selectedCategory = venueFilterCategoryDL.getValue();
-                boolean matchesCategory = (selectedCategory == null
-                        || selectedCategory.isEmpty()
-                        || selectedCategory.equals("All"))
-                        || getVenues().stream().anyMatch(v -> v.getVenueName().equals(venue) && v.getCategory().equals(selectedCategory));
-                return matchesSearch && matchesCategory; // Combine both conditions
+                String selectedEvent = venueFilterEventType.getValue();
+
+                return matchesFilter(venue, newValue, selectedCategory, selectedEvent, venueFilterMin.getText(), venueFilterMax.getText()); // Call the helper method
             });
         });
 
-        // Add listener to ComboBox for category filtering
         venueFilterCategoryDL.valueProperty().addListener((observable, oldCategory, newCategory) -> {
             filteredList.setPredicate(venue -> {
-                boolean matchesCategory = (newCategory == null || newCategory.isEmpty() 
-                        || newCategory.equals("All")) || getVenues().stream().anyMatch(v -> v.getVenueName().equals(venue) && v.getCategory().equals(newCategory));
                 String searchText = searchVenueTF.getText();
-                boolean matchesSearch = (searchText == null || searchText.isEmpty()) || venue.toLowerCase().contains(searchText.toLowerCase());
-                return matchesSearch && matchesCategory; // Combine both conditions
+                String selectedEvent = venueFilterEventType.getValue();
+
+                return matchesFilter(venue, searchText, newCategory, selectedEvent, venueFilterMin.getText(), venueFilterMax.getText()); // Call the helper method
             });
         });
+
+        venueFilterEventType.valueProperty().addListener((observable, oldValue, newEventType) -> {
+            filteredList.setPredicate(venue -> {
+                String searchText = searchVenueTF.getText();
+                String selectedCategory = venueFilterCategoryDL.getValue();
+
+                return matchesFilter(venue, searchText, selectedCategory, newEventType, venueFilterMin.getText(), venueFilterMax.getText()); // Call the helper method
+            });
+        });
+
+        venueFilterMax.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(venue -> {
+                String searchText = searchVenueTF.getText();
+                String selectedCategory = venueFilterCategoryDL.getValue();
+                String selectedEvent = venueFilterEventType.getValue();
+
+                return matchesFilter(venue, searchText, selectedCategory, selectedEvent, venueFilterMin.getText(), newValue); // Pass min and max capacity values
+            });
+        });
+
+        venueFilterMin.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(venue -> {
+                String searchText = searchVenueTF.getText();
+                String selectedCategory = venueFilterCategoryDL.getValue();
+                String selectedEvent = venueFilterEventType.getValue();
+
+                return matchesFilter(venue, searchText, selectedCategory, selectedEvent, newValue, venueFilterMax.getText()); // Pass min and max capacity values
+            });
+        });
+
 
         // Set filtered list in ListView
         venueList.setItems(filteredList);
@@ -180,19 +210,35 @@ public class HomepageController {
                         alert.showAndWait();
                     }
 
-                    // resultSet.getInt("venueID"),
-                    //                            resultSet.getString("venueName"),
-                    //                            resultSet.getInt("capacity"),
-                    //                            resultSet.getString("suitable"),
-                    //                            resultSet.getString("category"),
-                    //                            resultSet.getFloat("price")
-
-
                     alert.showAndWait();
                 }
             }
         });
     }
+
+private boolean matchesFilter(String venue, String searchText, String selectedCategory, String selectedEvent, String minCapacityText, String maxCapacityText) {
+    // Check if venue matches the search term
+    boolean matchesSearch = (searchText == null || searchText.isEmpty())
+            || venue.toLowerCase().contains(searchText.toLowerCase());
+
+    // Check if venue matches the category filter
+    boolean matchesCategory = (selectedCategory == null || selectedCategory.isEmpty() || selectedCategory.equals("All"))
+            || getVenues().stream().anyMatch(v -> v.getVenueName().equals(venue) && v.getCategory().equals(selectedCategory));
+
+    // Check if venue matches the event type filter
+    boolean matchesEventType = (selectedEvent == null || selectedEvent.isEmpty() || selectedEvent.equals("All"))
+            || getVenues().stream().anyMatch(v -> v.getVenueName().equals(venue) && v.getSuitable().equals(selectedEvent));
+
+    // Check if venue matches the minimum capacity filter
+    boolean matchesMinCapacity = (minCapacityText == null || minCapacityText.isEmpty())
+            || getVenues().stream().anyMatch(v -> v.getVenueName().equals(venue) && v.getCapacity() >= Integer.parseInt(minCapacityText));
+
+    // Check if venue matches the maximum capacity filter
+    boolean matchesMaxCapacity = (maxCapacityText == null || maxCapacityText.isEmpty())
+            || getVenues().stream().anyMatch(v -> v.getVenueName().equals(venue) && v.getCapacity() <= Integer.parseInt(maxCapacityText));
+
+    return matchesSearch && matchesCategory && matchesEventType && matchesMinCapacity && matchesMaxCapacity;
+}
 
     public void OnAddVenue(ActionEvent event) throws Exception {
         // Create the dialog
@@ -321,6 +367,19 @@ public class HomepageController {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void setIntegerOnly(TextField textField) {
+        // Create a TextFormatter with a regular expression that allows only digits
+        TextFormatter<String> integerFormatter = new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("[0-9]*")) {
+                return change; // Allow the change
+            }
+            return null; // Reject the change if it's not a digit
+        });
+
+        textField.setTextFormatter(integerFormatter);
     }
     
     
