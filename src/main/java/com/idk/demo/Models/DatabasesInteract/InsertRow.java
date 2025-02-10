@@ -60,7 +60,10 @@
 
 package com.idk.demo.Models.DatabasesInteract;
 
+import com.idk.demo.Models.Venues;
+
 import java.sql.*;
+import java.util.List;
 
 import static com.idk.demo.Models.DatabasesInteract.DatabaseConnection.connect;
 
@@ -169,6 +172,43 @@ public class InsertRow {
             }
         }
     }
+    public static void insertVenuesBatch(List<Venues> venues) {
+        String sql = "INSERT INTO Venues (name, capacity, suitableFor, category, bookingPricePerHour) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set auto-commit to false for batch processing
+            conn.setAutoCommit(false);
+
+            // Add each venue to the batch
+            for (Venues venue : venues) {
+                pstmt.setString(1, venue.getVenueName());
+                pstmt.setInt(2, venue.getCapacity());
+                pstmt.setString(3, venue.getSuitable());
+                pstmt.setString(4, venue.getCategory());
+                pstmt.setFloat(5, venue.getPrice());
+
+                // Add to batch
+                pstmt.addBatch();
+            }
+
+            // Execute the batch
+            int[] result = pstmt.executeBatch();
+
+            // Commit the transaction
+            conn.commit();
+            System.out.println("Batch insert completed successfully, inserted " + result.length + " rows.");
+
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 19) {
+                System.out.println("Insert failed: Venue name already exists!");
+            } else {
+                System.out.println("SQL Error: " + e.getMessage());
+            }
+        }
+    }
+
 
     public static void insertVenueAvailabilityRow(int venueID, String date, String time) {
         //FIX ME! UNIQUE ISSUE! HAVE TO MAKE A COMPOSITE KEY?

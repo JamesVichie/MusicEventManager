@@ -20,11 +20,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.idk.demo.Models.DatabasesInteract.GetTables.*;
-import static com.idk.demo.Models.DatabasesInteract.InsertRow.insertVenueRow;
+import static com.idk.demo.Models.DatabasesInteract.InsertRow.*;
 
 
 public class HomepageController {
@@ -53,6 +54,10 @@ public class HomepageController {
     private ComboBox<String> venueFilterEventType;
     @FXML
     private ComboBox<String> venueFilterAvalibility;
+    @FXML
+    private Button importVenuesButton;
+    @FXML
+    private Button importEventRequestsButton;
 
     private ObservableList<String> venueNames;
     @FXML
@@ -369,6 +374,84 @@ private boolean matchesFilter(String venue, String searchText, String selectedCa
         stage.show();
     }
 
+    public void onImportVenues(ActionEvent event) throws Exception {
+//        List<Venues> venues = new ArrayList<>();
+        InputStream is = getClass().getResourceAsStream("/com/idk/demo/Views/files/venues.csv");
+
+        try {
+            assert is != null;
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line;
+                // Skip the header line
+                br.readLine();
+
+                while ((line = br.readLine()) != null) {
+                    String[] values = line.split(",");  // Split each line by commas
+                    String name = values[0];
+                    int capacity = Integer.parseInt(values[1]);
+                    String suitableFor = values[2];
+                    String category = values[3];
+                    int bookingPricePerHour = Integer.parseInt(values[4]);
+                    insertVenueRow(name, capacity, suitableFor, category, bookingPricePerHour);
+//                    Venues venue = new Venues(name, capacity, suitableFor, category, bookingPricePerHour);
+//                    venues.add(venue);
+
+                    //        insertVenuesBatch(venues);
+
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Parent root = FXMLLoader.load(getClass().getResource("/com/idk/demo/Views/HomepageView.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    public void onImportEventRequests(ActionEvent event) throws Exception {
+        InputStream is = getClass().getResourceAsStream("/com/idk/demo/Views/files/requests.csv");
+
+        try {
+            assert is != null;
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line;
+                // Skip the header line
+                br.readLine();
+
+                while ((line = br.readLine()) != null) {
+                    String[] values = line.split(",");  // Split each line by commas
+                    String clientName = values[0];
+                    String eventName = values[1];
+                    String mainArtist = values[2];
+                    String date = values[3];
+                    String time = values[4];
+                    int duration = Integer.parseInt(values[5]);
+                    int auidenceSize = Integer.parseInt(values[6]);
+                    String type = values[7];
+                    String category = values[8];
+                    insertEventRow(clientName, eventName, mainArtist, date, time, duration, auidenceSize, type, category);
+
+                    //batchAll later. rewokr needed to work
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Parent root = FXMLLoader.load(getClass().getResource("/com/idk/demo/Views/HomepageView.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
+
     private void setIntegerOnly(TextField textField) {
         // Create a TextFormatter with a regular expression that allows only digits
         TextFormatter<String> integerFormatter = new TextFormatter<>(change -> {
@@ -381,6 +464,8 @@ private boolean matchesFilter(String venue, String searchText, String selectedCa
 
         textField.setTextFormatter(integerFormatter);
     }
+
+
     
     
 }
