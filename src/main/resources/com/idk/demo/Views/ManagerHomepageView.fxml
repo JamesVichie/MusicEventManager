@@ -17,8 +17,8 @@
       <Button layoutX="480.0" layoutY="453.0" mnemonicParsing="false" text="909?" />
       <Button layoutX="414.0" layoutY="233.0" mnemonicParsing="false" text="Export Transactions" />
       <Button layoutX="416.0" layoutY="274.0" mnemonicParsing="false" text="Import Transactions" />
-      <Button layoutX="418.0" layoutY="325.0" mnemonicParsing="false" text="Export Master Data" />
-      <Button layoutX="412.0" layoutY="365.0" mnemonicParsing="false" text="Import Mastser Data" />
+      <Button fx:id="exportMDButton" layoutX="416.0" layoutY="335.0" mnemonicParsing="false" onAction="#onExportMD" text="Export Master Data" />
+      <Button fx:id="importMDButton" layoutX="412.0" layoutY="365.0" mnemonicParsing="false" onAction="#onImportMD" text="Import Mastser Data" />
       <Button layoutX="416.0" layoutY="111.0" mnemonicParsing="false" text="View Pie Chart" />
       <Button layoutX="415.0" layoutY="147.0" mnemonicParsing="false" text="View Column Chart" />
       <Button layoutX="415.0" layoutY="76.0" mnemonicParsing="false" text="View Summary" />

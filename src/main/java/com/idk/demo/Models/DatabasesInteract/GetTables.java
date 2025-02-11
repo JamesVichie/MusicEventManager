@@ -78,11 +78,7 @@
 //}
 package com.idk.demo.Models.DatabasesInteract;
 
-import com.idk.demo.Models.Events;
-import com.idk.demo.Models.Users;
-import com.idk.demo.Models.Clients;
-import com.idk.demo.Models.Venues;
-import com.idk.demo.Models.VenueAvailability;
+import com.idk.demo.Models.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -131,7 +127,8 @@ public class GetTables {
                             resultSet.getInt("duration"),
                             resultSet.getInt("audienceSize"),
                             resultSet.getString("type"),
-                            resultSet.getString("category")
+                            resultSet.getString("category"),
+                            resultSet.getBoolean("confirmed")
                     );
                     System.out.println(event.toString());
                     eventList.add(event);
@@ -164,7 +161,9 @@ public class GetTables {
                             resultSet.getInt("duration"),
                             resultSet.getInt("audienceSize"),
                             resultSet.getString("type"),
-                            resultSet.getString("category")
+                            resultSet.getString("category"),
+                            resultSet.getBoolean("confirmed")
+
                     );
                     System.out.println("Venue retrieved successfully: " + event);
                     return event;
@@ -288,6 +287,30 @@ public class GetTables {
         }
     }
 
+    public static ArrayList<Orders> getOrders() {
+        String sql = "SELECT * FROM orders";
+        ArrayList<Orders> orderList = new ArrayList<>();
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement()) {
+            try (ResultSet resultSet = stmt.executeQuery(sql)) {
+                while(resultSet.next()) {
+                    Orders order = new Orders(
+//                            resultSet.getInt("orderID"),
+                            resultSet.getString("eventName"),
+                            resultSet.getString("venueName")
+                    );
+                    System.out.println(order.toString());
+                    orderList.add(order);
+                }
+                System.out.println("Clients read successfully.");
+                return orderList;
+            }
+        } catch (SQLException e) {
+            System.out.println("Table read failed: " + e.getMessage());
+            return orderList;
+        }
+    }
     public static void main(String[] args) {
         ArrayList<Users> user = getUsers();
         ArrayList<Events> event = getEvents();

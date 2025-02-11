@@ -1,6 +1,8 @@
 package com.idk.demo.Models;
 
-public class Venues {
+import java.io.Serializable;
+
+public class Venues implements Serializable {
     private int venueID;
     private String venueName;
     private int capacity;

@@ -24,6 +24,7 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.idk.demo.Models.DatabasesInteract.EditTables.updateConfirmed;
 import static com.idk.demo.Models.DatabasesInteract.GetTables.*;
 import static com.idk.demo.Models.DatabasesInteract.InsertRow.*;
 
@@ -32,6 +33,7 @@ public class HomepageController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
     @FXML
     private Button signout;
     @FXML
@@ -64,6 +66,9 @@ public class HomepageController {
     private Button displayProfile;
     @FXML
     private ListView<String> eventList;
+    @FXML
+    private ListView<String> confirmedBookingList;
+    @FXML private Button confirmRequestButton;
 
     public void initialize() {
         setIntegerOnly(venueFilterMax);
@@ -71,9 +76,21 @@ public class HomepageController {
 
         //EVENT LISRT
         ArrayList<Events> eventsAll = getEvents();
+//        ArrayList<String> events = eventsAll.stream()
+//                .map(Events::getEventName)
+//                .collect(Collectors.toCollection(ArrayList::new));
+
         ArrayList<String> events = eventsAll.stream()
-                .map(Events::getEventName)
+                .filter(event -> !event.isConfirmed()) // Filter only unconfirmed events
+                .map(Events::getEventName)             // Map to event names
                 .collect(Collectors.toCollection(ArrayList::new));
+
+        ArrayList<String> confirmedEvents = eventsAll.stream()
+                .filter(Events::isConfirmed) // Filter only unconfirmed events
+                .map(Events::getEventName)             // Map to event names
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        confirmedBookingList.setItems(FXCollections.observableArrayList(confirmedEvents));
         eventList.setItems(FXCollections.observableArrayList(events));
 
         eventList.setOnMouseClicked(event -> {
@@ -94,7 +111,45 @@ public class HomepageController {
                                 + "\nDuration: " + selectedEventNow.getDuration() + " hours"
                                 + "\nAudience Size: " + selectedEventNow.getAudienceSize()
                                 + "\nType: " + selectedEventNow.getType()
-                                + "\nCategory: " + selectedEventNow.getCategory());
+                                + "\nCategory: " + selectedEventNow.getCategory()
+                                + "\nConfirmed: " + selectedEventNow.isConfirmed());
+                    }
+                    catch (NullPointerException e){
+                        Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Sorry, Error with venue");
+                        alert.setHeaderText("Error loading venue");
+                        alert.setContentText("Im very sorry");
+                        alert.showAndWait();
+                    }
+
+                    alert.showAndWait();
+                }
+            }
+        });
+
+        confirmedBookingList.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Double-click detected
+                String selectedEvent = confirmedBookingList.getSelectionModel().getSelectedItem();
+                if (selectedEvent != null) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Event Selected");
+                    alert.setHeaderText(null);
+                    Events selectedEventNow = getEvent(selectedEvent);
+                    try {
+                        alert.setContentText(
+                                "Client Name: " + selectedEventNow.getClientName()
+                                        + "\nEvent Name: " + selectedEventNow.getEventName()
+                                        + "\nMain Artist: " + selectedEventNow.getMainArtist()
+                                        + "\nDate: " + selectedEventNow.getDate()
+                                        + "\nTime: " + selectedEventNow.getTime()
+                                        + "\nDuration: " + selectedEventNow.getDuration() + " hours"
+                                        + "\nAudience Size: " + selectedEventNow.getAudienceSize()
+                                        + "\nType: " + selectedEventNow.getType()
+                                        + "\nCategory: " + selectedEventNow.getCategory()
+                                        + "\nConfirmed: " + selectedEventNow.isConfirmed()
+                                        + "\nVenue: "
+                                        + "\nPrice: "
+                                        + "\nCommission Earned: ");
                     }
                     catch (NullPointerException e){
                         Alert alert2 = new Alert(Alert.AlertType.ERROR);
@@ -131,7 +186,7 @@ public class HomepageController {
         venueNames = FXCollections.observableArrayList(venues);
 
         // Wrap in a FilteredList
-        FilteredList<String> filteredList = new FilteredList<>(venueNames, s -> true);
+        FilteredList<String> filteredList = new FilteredList<>(venueNames);
 
         searchVenueTF.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredList.setPredicate(venue -> {
@@ -193,8 +248,7 @@ public class HomepageController {
                     alert.setTitle("Venue Selected");
                     alert.setHeaderText(null);
                     Venues selectedVenueNow = getVenue(selectedVenue);
-//                    alert.setContentText("Selected Venue: " + selectedVenue);
-//                    alert.setContentText("Venue ID: " + selectedVenueNow.getVenueID());
+
                     try {
                         alert.setContentText("Venue Name: " + selectedVenueNow.getVenueName()
                         + "\nVenue ID: " + selectedVenueNow.getVenueID()
@@ -202,10 +256,7 @@ public class HomepageController {
                         + "\nSuitable for: " + selectedVenueNow.getSuitable()
                         + "\nCategory: " + selectedVenueNow.getCategory()
                         + "\nPrice: " + selectedVenueNow.getPrice());
-//                        alert.setContentText("Capacity: " + selectedVenueNow.getCapacity());
-//                        alert.setContentText("Suitable for: " + selectedVenueNow.getSuitable());
-//                        alert.setContentText("Category: " + selectedVenueNow.getCategory());
-//                        alert.setContentText("Price: " + selectedVenueNow.getPrice());
+
                     }
                     catch (NullPointerException e){
                         Alert alert2 = new Alert(Alert.AlertType.ERROR);
@@ -244,6 +295,85 @@ private boolean matchesFilter(String venue, String searchText, String selectedCa
 
     return matchesSearch && matchesCategory && matchesEventType && matchesMinCapacity && matchesMaxCapacity;
 }
+
+    public void onConfirmRequest(ActionEvent event) throws Exception {
+        // Create the dialog
+        ArrayList<Venues> venues = getVenues();
+        ArrayList<String> venueNames = venues.stream()
+                .map(Venues::getVenueName)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        ArrayList<Events> events = getEvents();
+        ArrayList<String> eventNames = events.stream()
+                .filter(s -> !s.isConfirmed())
+                .map(Events::getEventName)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+
+        Dialog<Venues> dialog = new Dialog<>();
+        dialog.setTitle("Confirm an event Request");
+        dialog.setHeaderText("Please choose a Venue for an Event:");
+
+        // Set dialog content
+        Label venueNameLabel = new Label("Venue Name:");
+        ComboBox<String> venueNameDL = new ComboBox<>();
+
+        Label eventNameLabel = new Label("Event Name:");
+        ComboBox<String> eventNameDL = new ComboBox<>();
+
+        venueNameDL.getItems().addAll(venueNames);
+        eventNameDL.getItems().addAll(eventNames);
+
+
+//        Button confirmButton = new Button("Confirm");
+//        Button cancelButton = new Button("Cancel");
+
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        gridPane.add(venueNameLabel, 0, 0);
+        gridPane.add(venueNameDL, 1, 0);
+
+        gridPane.add(eventNameLabel, 0, 1);
+        gridPane.add(eventNameDL, 1, 1);
+
+        dialog.getDialogPane().setContent(gridPane);
+        ButtonType okButtonType = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
+
+        // Handle "OK" button
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == okButtonType) {
+                if (!venueNameDL.getItems().isEmpty()
+                        && !eventNameDL.getItems().isEmpty()) {
+                    try {
+                        insertOrderRow(eventNameDL.getValue(), venueNameDL.getValue());
+                        updateConfirmed(eventNameDL.getValue(), true);
+                        System.out.println(venueNameDL.getValue() + "VENUE");
+                        System.out.println(eventNameDL.getValue() + "EVENT");
+                        //get event and set the confirmed to true
+                    } catch (Exception e) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Invalid Input");
+                        alert.setHeaderText("Error adding ordder");
+                        alert.setContentText("Please help.");
+                        alert.showAndWait();
+                        return null;
+                    }
+                }
+            }
+            return null;
+        });
+        dialog.showAndWait();
+        Parent root = FXMLLoader.load(getClass().getResource("/com/idk/demo/Views/HomepageView.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
 
     public void OnAddVenue(ActionEvent event) throws Exception {
         // Create the dialog
@@ -434,7 +564,8 @@ private boolean matchesFilter(String venue, String searchText, String selectedCa
                     int auidenceSize = Integer.parseInt(values[6]);
                     String type = values[7];
                     String category = values[8];
-                    insertEventRow(clientName, eventName, mainArtist, date, time, duration, auidenceSize, type, category);
+                    Boolean confirmed = Boolean.parseBoolean(values[9]);
+                    insertEventRow(clientName, eventName, mainArtist, date, time, duration, auidenceSize, type, category, confirmed);
 
                     //batchAll later. rewokr needed to work
                 }

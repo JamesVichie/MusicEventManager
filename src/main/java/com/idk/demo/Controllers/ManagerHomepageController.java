@@ -1,5 +1,6 @@
 package com.idk.demo.Controllers;
 
+import com.idk.demo.Models.Clients;
 import com.idk.demo.Models.Users;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,11 +16,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.w3c.dom.Text;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import static com.idk.demo.Models.DatabasesInteract.DeleteRow.deleteUserRow;
+import static com.idk.demo.Models.DatabasesInteract.GetTables.getClients;
 import static com.idk.demo.Models.DatabasesInteract.GetTables.getUsers;
+import static com.idk.demo.Models.DatabasesInteract.InsertRow.insertClientRow;
 import static com.idk.demo.Models.DatabasesInteract.InsertRow.insertUserRow;
 import static com.idk.demo.Models.DatabasesInteract.EditTables.promoteUser;
 
@@ -216,6 +220,46 @@ public class ManagerHomepageController {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void onExportMD(ActionEvent event) throws Exception {
+        //users clients
+        try {
+            ArrayList<Object> objects = new ArrayList<>();
+            objects.addAll(getUsers());
+            objects.addAll(getClients());
+
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("masterData.lmvm"));
+            out.writeObject(objects);
+            out.close();
+            System.out.println("Data saved successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onImportMD(ActionEvent event) throws Exception {
+            // Deserialize from file
+        try{
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("masterData.lmvm"));
+            ArrayList<Object> loadedList = (ArrayList<Object>) in.readObject();
+            in.close();
+
+            System.out.println("Deserialized Data:");
+            for (Object obj : loadedList) {
+                if(obj instanceof Users){
+                    insertUserRow(((Users) obj).getUsername(), ((Users) obj).getPassword(), ((Users) obj).getPosition());
+                }
+                //FIX ME! id issues
+                else if(obj instanceof Clients){
+                    insertClientRow(((Clients) obj).getClientName());
+                }
+            }
+
+
+        }catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
 

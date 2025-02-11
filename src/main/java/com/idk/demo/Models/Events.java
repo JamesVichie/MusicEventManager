@@ -1,9 +1,10 @@
 package com.idk.demo.Models;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.text.DateFormat;
 
-public class Events {
+public class Events implements Serializable {
     private String clientName;
     private String eventName;
     private String mainArtist;
@@ -13,9 +14,10 @@ public class Events {
     private int audienceSize;
     private String type;
     private String category;
+    private boolean confirmed;
 
     // Constructor
-    public Events(String clientName, String eventName, String mainArtist, String date, String time, int duration, int audienceSize, String type, String category) {
+    public Events(String clientName, String eventName, String mainArtist, String date, String time, int duration, int audienceSize, String type, String category, boolean confirmed) {
         this.clientName = clientName;
         this.eventName = eventName;
         this.mainArtist = mainArtist;
@@ -25,6 +27,7 @@ public class Events {
         this.audienceSize = audienceSize;
         this.type = type;
         this.category = category;
+        this.confirmed = confirmed;
     }
 
     // Getters
@@ -62,8 +65,16 @@ public class Events {
 
     public String getCategory() {
         return category;
+
     }
 
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
     // Setters
     public void setClientName(String clientName) {
         this.clientName = clientName;

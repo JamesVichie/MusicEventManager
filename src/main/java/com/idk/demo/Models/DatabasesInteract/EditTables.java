@@ -54,4 +54,20 @@ public class EditTables {
             System.out.println(e.getMessage());
         }
     }
+
+    public static void updateConfirmed(String eventName, Boolean confirmed){
+        String sql = "UPDATE events SET confirmed = ? WHERE eventName = ?";
+
+        try(Connection conn = connect();
+        PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setBoolean(1, confirmed);
+            pstmt.setString(2, eventName);
+            pstmt.executeUpdate();
+            System.out.println("Confirmed!! successfully updated. order confimration");
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(eventName + " ur dumb fix thsi");
+        }
+    }
 }

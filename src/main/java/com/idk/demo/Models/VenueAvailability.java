@@ -1,6 +1,8 @@
 package com.idk.demo.Models;
 
-public class VenueAvailability {
+import java.io.Serializable;
+
+public class VenueAvailability implements Serializable {
     private int bookingID;
     private int venueID;
     private String date;

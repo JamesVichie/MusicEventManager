@@ -115,7 +115,8 @@ public class InsertRow {
                                       int duration,
                                       int audienceSize,
                                       String type,
-                                      String category) {
+                                      String category,
+                                      Boolean confirmed) {
         String sql = "INSERT INTO events " +
                 "(clientName, " +
                 "eventName, " +
@@ -125,8 +126,9 @@ public class InsertRow {
                 "duration, " +
                 "audienceSize, " +
                 "type, " +
-                "category) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "category, " +
+                "confirmed )" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -139,6 +141,7 @@ public class InsertRow {
             stmt.setInt(7, audienceSize);
             stmt.setString(8, type);
             stmt.setString(9, category);
+            stmt.setBoolean(10, confirmed);
 
             stmt.executeUpdate();
             System.out.println("Event successfully added.");
@@ -227,6 +230,24 @@ public class InsertRow {
         }
     }
 
+    public static void insertOrderRow(String eventName, String venueName) {
+        //FIX ME! UNIQUE ISSUE! HAVE TO MAKE A COMPOSITE KEY?
+        String sql = "INSERT INTO orders (eventName, venueName) VALUES (?, ?)";
+
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, eventName);
+            stmt.setString(2, venueName);
+
+            stmt.executeUpdate();
+            System.out.println("orders successfully added.");
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        }
+    }
+
+
+
     public static void main(String[] args) {
         // Insert test data
         insertUserRow("Vichie", "Vichie", "Manager");
@@ -241,25 +262,25 @@ public class InsertRow {
         insertClientRow("Bob E");
         insertClientRow("Jess F");
         insertEventRow("Jeff", "Music aasdqas", "Jackson Browne", "09/01/2003",
-                "12pm", 3, 3333, "Indoor", "Live");
+                "12pm", 3, 3333, "Indoor", "Live", false);
         insertEventRow("Alice", "Art Expo", "Emma Watson", "10/05/2023",
-                "2pm", 5, 500, "Outdoor", "Exhibition");
+                "2pm", 5, 500, "Outdoor", "Exhibition", true);
         insertEventRow("John", "Comedy Night", "Kevin Hart", "11/15/2023",
-                "7pm", 2, 200, "Indoor", "Comedy");
+                "7pm", 2, 200, "Indoor", "Comedy", false);
         insertEventRow("Steve", "Tech Talk", "Elon Musk", "12/20/2023",
-                "4pm", 1, 1000, "Online", "Conference");
+                "4pm", 1, 1000, "Online", "Conference", false);
         insertEventRow("Sarah", "Food Fest", "Gordon Ramsay", "01/10/2024",
-                "11am", 8, 3000, "Outdoor", "Festival");
+                "11am", 8, 3000, "Outdoor", "Festival", false);
         insertEventRow("Linda", "Book Launch", "J.K. Rowling", "02/07/2024",
-                "3pm", 2, 150, "Indoor", "Literature");
+                "3pm", 2, 150, "Indoor", "Literature", true);
         insertEventRow("Mark", "Science Expo", "Neil deGrasse Tyson", "03/15/2024",
-                "10am", 6, 1200, "Outdoor", "Educational");
+                "10am", 6, 1200, "Outdoor", "Educational", true);
         insertEventRow("Anna", "Fashion Show", "Gigi Hadid", "04/12/2024",
-                "5pm", 3, 700, "Indoor", "Fashion");
+                "5pm", 3, 700, "Indoor", "Fashion", false);
         insertEventRow("David", "Gaming Championship", "Ninja", "05/20/2024",
-                "9am", 10, 5000, "Online", "Esports");
+                "9am", 10, 5000, "Online", "Esports", true);
         insertEventRow("Emily", "Opera Night", "Andrea Bocelli", "06/25/2024",
-                "7pm", 3, 800, "Indoor", "Music");
+                "7pm", 3, 800, "Indoor", "Music", false);
         insertVenueRow("Sunset Arena", 5000, "Concerts", "Entertainment", 7500.00f);
         insertVenueRow("Grand Hall", 3000, "Conferences", "Business", 6500.00f);
         insertVenueRow("Riverside Pavilion", 2000, "Weddings", "Celebrations", 4000.00f);

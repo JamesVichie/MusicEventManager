@@ -1,6 +1,8 @@
 package com.idk.demo.Models;
 
-public class Users {
+import java.io.Serializable;
+
+public class Users implements Serializable {
     private int userID;
     private String username;
     private String password;
@@ -11,6 +13,9 @@ public class Users {
         this.username = username;
         this.password = password;
         this.position = position;
+    }
+    public String getClassType() {
+        return "user";
     }
 
     public void setUsername(String username) {

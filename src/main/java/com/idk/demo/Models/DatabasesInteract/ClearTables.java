@@ -69,7 +69,8 @@ public class ClearTables {
                 + "duration INTEGER NOT NULL, "
                 + "audienceSize INTEGER NOT NULL, "
                 + "type TEXT NOT NULL, "
-                + "category TEXT NOT NULL "
+                + "category TEXT NOT NULL, "
+                + "confirmed BOOLEAN NOT NULL "
 //                + "FOREIGN KEY (clientID) REFERENCES clients(clientID) ON DELETE CASCADE"
                 + ");";
 
@@ -123,6 +124,23 @@ public class ClearTables {
         }
     }
 
+    public static void clearOrdersTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS orders ("
+                + "orderID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "eventName String NOT NULL, "
+                + "venueName String NOT NULL, "
+                + ");";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute("Drop table if exists orders;");
+            stmt.execute(sql);
+            System.out.println(" orders Table cleared successfully.");
+        } catch (SQLException e) {
+            System.out.println("orders creation failed: " + e.getMessage());
+        }
+    }
+
 
 
     public static void main(String[] args) {
@@ -131,6 +149,7 @@ public class ClearTables {
         clearEventsTable();
         clearVenuesTable();
         clearVenuesAvailabilityTable();
+        clearOrdersTable();
 
         //book
         //order

@@ -1,12 +1,17 @@
 package com.idk.demo.Models;
 
-public class Clients {
+import java.io.Serializable;
+
+public class Clients implements Serializable {
     private int clientID;
     private String clientName;
 
     public Clients(int clientID, String clientName) {
         this.clientID = clientID;
         this.clientName = clientName;
+    }
+    public String getClassType() {
+        return "client";
     }
 
     public int getClientID() {
