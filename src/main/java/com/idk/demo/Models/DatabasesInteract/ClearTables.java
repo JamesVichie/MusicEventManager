@@ -64,7 +64,7 @@ public class ClearTables {
                 + "clientName TEXT UNIQUE NOT NULL, "
                 + "eventName TEXT UNIQUE NOT NULL, "
                 + "mainArtist TEXT NOT NULL, "
-                + "date TEXT NOT NULL, "
+                + "date DATE NOT NULL, "
                 + "time TEXT NOT NULL, "
                 + "duration INTEGER NOT NULL, "
                 + "audienceSize INTEGER NOT NULL, "
@@ -129,6 +129,10 @@ public class ClearTables {
                 + "orderID INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "eventName String NOT NULL, "
                 + "venueName String NOT NULL, "
+                + "orderDate DATE NOT NULL, "
+                + "duration INTEGER NOT NULL, "
+                + "price FLOAT NOT NULL, "
+                + "commission FLOAT NOT NULL "
                 + ");";
 
         try (Connection conn = connect();

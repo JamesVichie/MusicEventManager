@@ -1,6 +1,7 @@
 package com.idk.demo.Models.DatabasesInteract;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -62,7 +63,7 @@ public class CreateTables {
                 + "clientName TEXT UNIQUE NOT NULL, "
                 + "eventName TEXT UNIQUE NOT NULL, "
                 + "mainArtist TEXT NOT NULL, "
-                + "date TEXT NOT NULL, "
+                + "date DATE NOT NULL, "
                 + "time TEXT NOT NULL, "
                 + "duration INTEGER NOT NULL, "
                 + "audienceSize INTEGER NOT NULL, "
@@ -120,11 +121,16 @@ public class CreateTables {
             System.out.println("Availability creation failed: " + e.getMessage());
         }
     }
-    public static void createOrdersTable() {
+
+        public static void createOrdersTable() {
         String sql = "CREATE TABLE IF NOT EXISTS orders ("
                 + "orderID INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "eventName String NOT NULL, "
-                + "venueName String NOT NULL "
+                + "venueName String NOT NULL, "
+                + "orderDate DATE NOT NULL, "
+                + "duration INTEGER NOT NULL, "
+                + "price FLOAT NOT NULL, "
+                + "commission FLOAT NOT NULL "
                 + ");";
 
         try (Connection conn = connect();

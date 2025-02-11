@@ -1,6 +1,7 @@
 package com.idk.demo.Controllers;
 
 import com.idk.demo.Models.Events;
+import com.idk.demo.Models.Orders;
 import com.idk.demo.Models.Utility.SessionManager;
 import com.idk.demo.Models.Venues;
 import javafx.event.ActionEvent;
@@ -21,6 +22,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 import java.io.*;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -128,13 +131,24 @@ public class HomepageController {
         });
 
         confirmedBookingList.setOnMouseClicked(event -> {
+            //get order where event name is selected eventname
+            //get all order details and print :)
+            ArrayList<Orders> ordersAll = getOrders();
+
+
+
             if (event.getClickCount() == 2) { // Double-click detected
                 String selectedEvent = confirmedBookingList.getSelectionModel().getSelectedItem();
+
                 if (selectedEvent != null) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Event Selected");
                     alert.setHeaderText(null);
                     Events selectedEventNow = getEvent(selectedEvent);
+                    Orders order = ordersAll.stream()
+                            .filter(o -> o.getEventName().equals(selectedEventNow.getEventName())) // Filter by event name
+                            .findFirst() // Get the first matching order
+                            .orElse(null); // Return null if not found;
                     try {
                         alert.setContentText(
                                 "Client Name: " + selectedEventNow.getClientName()
@@ -146,10 +160,10 @@ public class HomepageController {
                                         + "\nAudience Size: " + selectedEventNow.getAudienceSize()
                                         + "\nType: " + selectedEventNow.getType()
                                         + "\nCategory: " + selectedEventNow.getCategory()
-                                        + "\nConfirmed: " + selectedEventNow.isConfirmed()
-                                        + "\nVenue: "
-                                        + "\nPrice: "
-                                        + "\nCommission Earned: ");
+//                                        + "\nConfirmed: " + selectedEventNow.isConfirmed()
+                                        + "\n\nVenue: " + order.getVenueName()
+                                        + "\nPrice: " + order.getPrice()
+                                        + "\nCommission Earned: " + order.getCommission());
                     }
                     catch (NullPointerException e){
                         Alert alert2 = new Alert(Alert.AlertType.ERROR);
@@ -348,10 +362,18 @@ private boolean matchesFilter(String venue, String searchText, String selectedCa
                 if (!venueNameDL.getItems().isEmpty()
                         && !eventNameDL.getItems().isEmpty()) {
                     try {
-                        insertOrderRow(eventNameDL.getValue(), venueNameDL.getValue());
+                        Venues selectedVenue = getVenue(venueNameDL.getSelectionModel().getSelectedItem());
+                        Events selectedEvent = getEvent(eventNameDL.getSelectionModel().getSelectedItem());
+//                            public Orders(String eventName, String venueName, Date orderDate, int duration, float price, float commission) {
+
+                        assert selectedVenue != null;
+                        float commi = selectedVenue.getPrice() / 10;
+
+                        assert selectedEvent != null;
+                        insertOrderRow(eventNameDL.getValue(), venueNameDL.getValue(), selectedEvent.getDate(), selectedEvent.getDuration(), selectedVenue.getPrice(), commi);
                         updateConfirmed(eventNameDL.getValue(), true);
-                        System.out.println(venueNameDL.getValue() + "VENUE");
-                        System.out.println(eventNameDL.getValue() + "EVENT");
+//                        System.out.println(venueNameDL.getValue() + "VENUE");
+//                        System.out.println(eventNameDL.getValue() + "EVENT");
                         //get event and set the confirmed to true
                     } catch (Exception e) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -552,8 +574,8 @@ private boolean matchesFilter(String venue, String searchText, String selectedCa
                 String line;
                 // Skip the header line
                 br.readLine();
-
                 while ((line = br.readLine()) != null) {
+
                     String[] values = line.split(",");  // Split each line by commas
                     String clientName = values[0];
                     String eventName = values[1];
@@ -564,8 +586,13 @@ private boolean matchesFilter(String venue, String searchText, String selectedCa
                     int auidenceSize = Integer.parseInt(values[6]);
                     String type = values[7];
                     String category = values[8];
-                    Boolean confirmed = Boolean.parseBoolean(values[9]);
-                    insertEventRow(clientName, eventName, mainArtist, date, time, duration, auidenceSize, type, category, confirmed);
+//                    Boolean confirmed = Boolean.parseBoolean(values[9]);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");  // Define date format
+
+                   java.util.Date utilDate = sdf.parse(date);
+                   java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+                    insertEventRow(clientName, eventName, mainArtist, sqlDate, time, duration, auidenceSize, type, category, false);
 
                     //batchAll later. rewokr needed to work
                 }

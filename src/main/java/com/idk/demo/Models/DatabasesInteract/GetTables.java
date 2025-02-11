@@ -122,7 +122,7 @@ public class GetTables {
                             resultSet.getString("clientName"),
                             resultSet.getString("eventName"),
                             resultSet.getString("mainArtist"),
-                            resultSet.getString("date"),
+                            resultSet.getDate("date"),
                             resultSet.getString("time"),
                             resultSet.getInt("duration"),
                             resultSet.getInt("audienceSize"),
@@ -156,7 +156,7 @@ public class GetTables {
                             resultSet.getString("clientName"),
                             resultSet.getString("eventName"),
                             resultSet.getString("mainArtist"),
-                            resultSet.getString("date"),
+                            resultSet.getDate("date"),
                             resultSet.getString("time"),
                             resultSet.getInt("duration"),
                             resultSet.getInt("audienceSize"),
@@ -297,8 +297,16 @@ public class GetTables {
                 while(resultSet.next()) {
                     Orders order = new Orders(
 //                            resultSet.getInt("orderID"),
+//                                public Orders(int orderID, String eventName, String venueName, Date orderDate, int duration, float price, float commission) {
+                            resultSet.getInt("orderID"),
                             resultSet.getString("eventName"),
-                            resultSet.getString("venueName")
+                            resultSet.getString("venueName"),
+                            resultSet.getDate("orderDate"),
+                            resultSet.getInt("duration"),
+                            resultSet.getFloat("price"),
+                            resultSet.getFloat("commission")
+
+
                     );
                     System.out.println(order.toString());
                     orderList.add(order);
