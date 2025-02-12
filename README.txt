@@ -34,7 +34,7 @@ Username has validation to always be unique
 **MANAGER PAGE**
 Can ADD, DELETE, PROMOTE accounts.
 I didn't understand the "manager 909" special key, so I did not implement
-Can import and export the serialized master and transactional data
+Can import and export the serialized master and transactional data - To test if this works, you can again use the "com/idk/demo/Models/DatabasesInteract/ClearTables.java" to clear the data, then import back in what you exported and it will be the same :)
 Has the two data visualisations
 Has the stats summary at the bottom
 
