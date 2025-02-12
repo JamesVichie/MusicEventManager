@@ -42,7 +42,8 @@ public class ClearTables {
 
         String sql = "CREATE TABLE IF NOT EXISTS clients ("
                 + "clientID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "clientName TEXT UNIQUE NOT NULL "
+                + "clientName TEXT UNIQUE NOT NULL, "
+                + "clientCommission FLOAT "
                 + ");";
 
         try (Connection conn = connect();
@@ -132,7 +133,8 @@ public class ClearTables {
                 + "orderDate DATE NOT NULL, "
                 + "duration INTEGER NOT NULL, "
                 + "price FLOAT NOT NULL, "
-                + "commission FLOAT NOT NULL "
+                + "commission FLOAT NOT NULL, "
+                + "clientName TEXT NOT NULL "
                 + ");";
 
         try (Connection conn = connect();

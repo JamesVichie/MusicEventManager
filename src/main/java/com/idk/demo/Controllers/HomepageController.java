@@ -72,17 +72,15 @@ public class HomepageController {
     @FXML
     private ListView<String> confirmedBookingList;
     @FXML private Button confirmRequestButton;
-
+    @FXML
     public void initialize() {
+
+
         setIntegerOnly(venueFilterMax);
         setIntegerOnly(venueFilterMin);
 
         //EVENT LISRT
         ArrayList<Events> eventsAll = getEvents();
-//        ArrayList<String> events = eventsAll.stream()
-//                .map(Events::getEventName)
-//                .collect(Collectors.toCollection(ArrayList::new));
-
         ArrayList<String> events = eventsAll.stream()
                 .filter(event -> !event.isConfirmed()) // Filter only unconfirmed events
                 .map(Events::getEventName)             // Map to event names
@@ -370,7 +368,7 @@ private boolean matchesFilter(String venue, String searchText, String selectedCa
                         float commi = selectedVenue.getPrice() / 10;
 
                         assert selectedEvent != null;
-                        insertOrderRow(eventNameDL.getValue(), venueNameDL.getValue(), selectedEvent.getDate(), selectedEvent.getDuration(), selectedVenue.getPrice(), commi);
+                        insertOrderRow(eventNameDL.getValue(), venueNameDL.getValue(), selectedEvent.getDate(), selectedEvent.getDuration(), selectedVenue.getPrice(), commi, selectedEvent.getClientName());
                         updateConfirmed(eventNameDL.getValue(), true);
 //                        System.out.println(venueNameDL.getValue() + "VENUE");
 //                        System.out.println(eventNameDL.getValue() + "EVENT");
@@ -480,15 +478,6 @@ private boolean matchesFilter(String venue, String searchText, String selectedCa
         dialog.showAndWait();
     }
 
-//    public void displayHomepage(ActionEvent event) throws Exception{
-//        Parent root = FXMLLoader.load(getClass().getResource("Views/HomepageView.fxml"));
-//        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-//        Scene scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//
-//    }
-
     public void onSignout(ActionEvent event) throws Exception {
         SessionManager.clearSession();
         Parent root = FXMLLoader.load(getClass().getResource("/com/idk/demo/Views/LoginView.fxml"));
@@ -512,6 +501,11 @@ private boolean matchesFilter(String venue, String searchText, String selectedCa
         else{
             Parent root = FXMLLoader.load(getClass().getResource("/com/idk/demo/Views/ManagerHomepageView.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setWidth(1930);  // Set the window width
+            stage.setHeight(1080);  // Set the window height
+            stage.setResizable(false);  // Optional: makes the window non-resizable
+            stage.centerOnScreen();
+
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -521,6 +515,10 @@ private boolean matchesFilter(String venue, String searchText, String selectedCa
     public void onDisplayProfile(ActionEvent event) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/com/idk/demo/Views/UserProfileView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setWidth(1930);  // Set the window width
+        stage.setHeight(1080);  // Set the window height
+        stage.setResizable(false);  // Optional: makes the window non-resizable
+        stage.centerOnScreen();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

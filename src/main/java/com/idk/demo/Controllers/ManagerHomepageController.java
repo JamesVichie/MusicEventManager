@@ -1,31 +1,30 @@
 package com.idk.demo.Controllers;
 
-import com.idk.demo.Models.Clients;
-import com.idk.demo.Models.Users;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import com.idk.demo.Models.*;
+import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.*;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import com.idk.demo.Models.Utility.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
-import org.w3c.dom.Text;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import static com.idk.demo.Models.DatabasesInteract.DeleteRow.deleteUserRow;
-import static com.idk.demo.Models.DatabasesInteract.GetTables.getClients;
-import static com.idk.demo.Models.DatabasesInteract.GetTables.getUsers;
-import static com.idk.demo.Models.DatabasesInteract.InsertRow.insertClientRow;
-import static com.idk.demo.Models.DatabasesInteract.InsertRow.insertUserRow;
+import static com.idk.demo.Models.DatabasesInteract.GetTables.*;
 import static com.idk.demo.Models.DatabasesInteract.EditTables.promoteUser;
+import static com.idk.demo.Models.DatabasesInteract.InsertRow.*;
 
 
 public class ManagerHomepageController {
@@ -33,7 +32,13 @@ public class ManagerHomepageController {
     private Scene scene;
     private Parent root;
     @FXML
+    private Label ctd;
+    @FXML
     private Button onSignout;
+    @FXML
+    private TableView<Clients> clientCommissionTV;
+    @FXML
+    private TableView<Orders> eventCommissionTV;
     @FXML
     private Button displayHomepage;
     @FXML
@@ -54,13 +59,114 @@ public class ManagerHomepageController {
     private RadioButton som;
     @FXML
     private RadioButton mos;
+    @FXML
+    private PieChart pieChart;
+    @FXML
+    private BarChart barChart;
+    @FXML private Button displayProfile;
 
 
 
 
-    public void displayManagerHomepage(ActionEvent event) throws Exception {
+    public void initialize() {
+        //for each venue, get countt he amount of times each venue name appears in the orders list, and display name and count
+        ArrayList<Venues> venuesAll = getVenues();
+        ArrayList<String> venues = venuesAll.stream()
+                .map(Venues::getVenueName)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        ArrayList<Orders> ordersAll = getOrders();
+
+        int countA;
+        for(String a : venues) {
+            countA = 0;
+            for (Orders b : ordersAll) {
+                if(a.equals(b.getVenueName())){
+                    System.out.println(a);
+                    System.out.println(b.getVenueName());
+                    countA += 1;
+                }
+            }
+            pieChart.getData().add(new PieChart.Data(a, countA));
+            System.out.println("Venue: " + a + " Orders: " + countA);
+        }
+
+        //get orders`
+        //for each EVENT NAME in orders
+            //get price and get commsison
+            //new bar chart data = (event name, price, comssions)
+
+        String name;
+        XYChart.Series prices = new XYChart.Series();
+        XYChart.Series commissions = new XYChart.Series();
+        prices.setName("Income $");
+        commissions.setName("Commission $");
+
+        for (Orders o : ordersAll) {
+            name = o.getVenueName();
+            prices.getData().add(new XYChart.Data(name, o.getPrice()));
+            commissions.getData().add(new XYChart.Data(name, o.getCommission()));
+
+        }
+        barChart.getData().addAll(prices, commissions);
+
+
+        //tableview client commissions
+
+        ArrayList<Clients> clients = getClients();
+        ObservableList<Clients> commissionData = FXCollections.observableArrayList();
+
+        for (Clients c : clients) {
+            float totalCommission = 0;
+            for(Orders o : ordersAll) {
+               if (c.getClientName().equals(o.getClientName())) {
+                   totalCommission += o.getCommission();
+               }
+            }
+            c.setClientCommission(totalCommission);
+            commissionData.add(c);
+            System.out.println("Client: " + c.getClientName() + " Commission: " + c.getClientCommission());
+        }
+
+
+        TableColumn<Clients, String> clientNameColumn = new TableColumn<>("Client Name");
+        clientNameColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getClientName()) // Wrap clientName in SimpleStringProperty
+        );
+
+        TableColumn<Clients, Float> commissionColumn = new TableColumn<>("Total Commission");
+        commissionColumn.setCellValueFactory(cellData ->
+                new SimpleFloatProperty(cellData.getValue().getClientCommission()).asObject() // Wrap totalCommission in SimpleFloatProperty and convert to Object
+        );
+
+        clientCommissionTV.getColumns().add(clientNameColumn);
+        clientCommissionTV.getColumns().add(commissionColumn);
+        clientCommissionTV.setItems(commissionData);
+
+        ObservableList<Orders> eventsData = FXCollections.observableArrayList();
+        eventsData.addAll(ordersAll);
+        TableColumn<Orders, String> eventNameColumn = new TableColumn<>("Event Name");
+        eventNameColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getEventName()) // Wrap clientName in SimpleStringProperty
+        );
+        TableColumn<Orders, Float> commissionnColumn = new TableColumn<>("Commission");
+        commissionnColumn.setCellValueFactory(cellData ->
+                new SimpleFloatProperty(cellData.getValue().getCommission()).asObject() // Wrap totalCommission in SimpleFloatProperty and convert to Object
+        );
+        eventCommissionTV.getColumns().add(eventNameColumn);
+        eventCommissionTV.getColumns().add(commissionnColumn);
+        eventCommissionTV.setItems(eventsData);
+
+        //commission to date
+        float ctdd = 0;
+        for (Orders o : ordersAll) {
+            ctdd += o.getCommission();
+        }
+        ctd.setText("The total commission to date is: $" + ctdd);
+
 
     }
+
 
     public void OnAddAccount(ActionEvent event) {
         if ((addUsernameTF.getText().isEmpty()) || (addPasswordTF.getText().isEmpty())) {
@@ -208,6 +314,10 @@ public class ManagerHomepageController {
     public void displayHomepage(ActionEvent event) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/com/idk/demo/Views/HomepageView.fxml"));
         Stage stage = (Stage) displayHomepage.getScene().getWindow();
+        stage.setWidth(1930);  // Set the window width
+        stage.setHeight(1080);  // Set the window height
+        stage.setResizable(false);  // Optional: makes the window non-resizable
+        stage.centerOnScreen();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -217,6 +327,7 @@ public class ManagerHomepageController {
         SessionManager.clearSession();
         Parent root = FXMLLoader.load(getClass().getResource("/com/idk/demo/Views/LoginView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setResizable(true);  // Optional: makes the window non-resizable
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -232,10 +343,39 @@ public class ManagerHomepageController {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("masterData.lmvm"));
             out.writeObject(objects);
             out.close();
-            System.out.println("Data saved successfully.");
+            System.out.println("Master saved successfully.");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onExportT(ActionEvent event) throws Exception {
+        //users clients
+        try {
+            ArrayList<Object> objects = new ArrayList<>();
+            objects.addAll(getOrders());
+            objects.addAll(getEvents());
+            objects.addAll(getVenues());
+
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("transactionalData.lmvm"));
+            out.writeObject(objects);
+            out.close();
+            System.out.println("Transactional successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onDisplayProfile(ActionEvent event) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("/com/idk/demo/Views/UserProfileView.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setWidth(1930);  // Set the window width
+        stage.setHeight(1080);  // Set the window height
+        stage.setResizable(false);  // Optional: makes the window non-resizable
+        stage.centerOnScreen();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void onImportMD(ActionEvent event) throws Exception {
@@ -248,11 +388,68 @@ public class ManagerHomepageController {
             System.out.println("Deserialized Data:");
             for (Object obj : loadedList) {
                 if(obj instanceof Users){
-                    insertUserRow(((Users) obj).getUsername(), ((Users) obj).getPassword(), ((Users) obj).getPosition());
+                    insertUserRow(
+                            ((Users) obj).getUsername(),
+                            ((Users) obj).getPassword(),
+                            ((Users) obj).getPosition()
+                    );
                 }
                 //FIX ME! id issues
                 else if(obj instanceof Clients){
-                    insertClientRow(((Clients) obj).getClientName());
+                    insertClientRow(
+                            ((Clients) obj).getClientName(),
+                            ((Clients) obj).getClientCommission()
+                    );
+                }
+            }
+
+
+        }catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    public void onImportT(ActionEvent event) throws Exception {
+        // Deserialize from file
+        try{
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("transactionalData.lmvm"));
+            ArrayList<Object> loadedList = (ArrayList<Object>) in.readObject();
+            in.close();
+
+            System.out.println("Deserialized Data:");
+            for (Object obj : loadedList) {
+                if(obj instanceof Orders){
+                    insertOrderRow(
+                            ((Orders) obj).getEventName(),
+                            ((Orders) obj).getVenueName(),
+                            ((Orders) obj).getOrderDate(),
+                            ((Orders) obj).getDuration(),
+                            ((Orders) obj).getPrice(),
+                            ((Orders) obj).getCommission(),
+                            ((Orders) obj).getClientName());
+                }
+                //FIX ME! id issues
+                else if(obj instanceof Events){
+                    insertEventRow(
+                            ((Events) obj).getClientName(),
+                            ((Events) obj).getEventName(),
+                            ((Events) obj).getMainArtist(),
+                            ((Events) obj).getDate(),
+                            ((Events) obj).getTime(),
+                            ((Events) obj).getDuration(),
+                            ((Events) obj).getAudienceSize(),
+                            ((Events) obj).getType(),
+                            ((Events) obj).getCategory(),
+                            ((Events) obj).isConfirmed()
+                    );
+                }
+                else if(obj instanceof Venues){
+                    insertVenueRow
+                            (((Venues) obj).getVenueName(),
+                            ((Venues) obj).getCapacity(),
+                            ((Venues) obj).getSuitable(),
+                            ((Venues) obj).getCategory(),
+                            ((Venues) obj).getPrice()
+                    );
                 }
             }
 

@@ -57,6 +57,10 @@ public class LoginController {
                 SessionManager.saveSession(usernameField.getText(), position);
                 Parent root = FXMLLoader.load(getClass().getResource("/com/idk/demo/Views/HomepageView.fxml"));
                 Stage stage = (Stage) loginButton.getScene().getWindow();
+                stage.setWidth(1930);  // Set the window width
+                stage.setHeight(1080);  // Set the window height
+                stage.setResizable(false);  // Optional: makes the window non-resizable
+                stage.centerOnScreen();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();

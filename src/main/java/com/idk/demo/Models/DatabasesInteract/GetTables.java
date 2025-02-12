@@ -188,7 +188,9 @@ public class GetTables {
                 while(resultSet.next()) {
                     Clients client = new Clients(
                             resultSet.getInt("clientID"),
-                            resultSet.getString("clientName")
+                            resultSet.getString("clientName"),
+                            resultSet.getFloat("clientCommission")
+
                     );
                     System.out.println(client.toString());
                     clientList.add(client);
@@ -304,7 +306,8 @@ public class GetTables {
                             resultSet.getDate("orderDate"),
                             resultSet.getInt("duration"),
                             resultSet.getFloat("price"),
-                            resultSet.getFloat("commission")
+                            resultSet.getFloat("commission"),
+                            resultSet.getString("clientName")
 
 
                     );

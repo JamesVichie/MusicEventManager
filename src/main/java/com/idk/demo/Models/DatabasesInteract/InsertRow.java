@@ -67,6 +67,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.time.LocalDate;
 import static com.idk.demo.Models.DatabasesInteract.DatabaseConnection.connect;
+import static java.lang.Float.parseFloat;
 
 public class InsertRow {
 
@@ -90,12 +91,13 @@ public class InsertRow {
         }
     }
 
-    public static void insertClientRow(String name) {
-        String sql = "INSERT INTO clients (clientName) VALUES (?)";
+    public static void insertClientRow(String name, Float clientCommission) {
+        String sql = "INSERT INTO clients (clientName, clientCommission) VALUES (?, ?)";
 
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, name);
+            stmt.setFloat(2, clientCommission);
 
             stmt.executeUpdate();
             System.out.println("Client successfully added.");
@@ -131,8 +133,13 @@ public class InsertRow {
                 "confirmed )" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+//        String sqc = "INSERT INTO clients" +
+//                "(clientName)" +
+//                "VALUES (?)";
+        insertClientRow(clientName, (float)0);
+
         try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setString(1, clientName);
             stmt.setString(2, eventName);
             stmt.setString(3, mainArtist);
@@ -231,10 +238,10 @@ public class InsertRow {
         }
     }
 
-    public static void insertOrderRow(String eventName, String venueName, Date orderDate, int duration, float price, float commission) {
+    public static void insertOrderRow(String eventName, String venueName, Date orderDate, int duration, float price, float commission, String clientName) {
 //            public Orders(int orderID, String eventName, String venueName, Date orderDate, int duration, float price, float commission) {
 
-            String sql = "INSERT INTO orders (eventName, venueName, orderDate, duration, price, commission) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO orders (eventName, venueName, orderDate, duration, price, commission, clientName) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -244,6 +251,7 @@ public class InsertRow {
             stmt.setInt(4, duration);
             stmt.setFloat(5, price);
             stmt.setFloat(6, commission);
+            stmt.setString(7, clientName);
 
 
             stmt.executeUpdate();
@@ -262,32 +270,28 @@ public class InsertRow {
         insertUserRow("w", "w", "Staff");
         insertUserRow("z", "z", "Staff");
 
-        insertClientRow("Jack A");
-        insertClientRow("Peter B");
-        insertClientRow("Lucy C");
-        insertClientRow("Margret D");
-        insertClientRow("Bob E");
-        insertClientRow("Jess F");
+//        insertClientRow("Jack A", (float) 0);
+//        insertClientRow("Peter B", (float) 0);
+//        insertClientRow("Lucy C", (float) 0);
+//        insertClientRow("Margret D", (float) 0);
+//        insertClientRow("Bob E", (float) 0);
+//        insertClientRow("Jess F", (float) 0);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         try {
             insertEventRow("Jeff", "Music Night", "Jackson Browne", Date.valueOf("2024-03-15"),
                     "12pm", 3, 3333, "Indoor", "Live", false);
-            insertEventRow("Alice", "Art Expo", "Emma Watson", Date.valueOf("2024-06-05"),
-                    "2pm", 5, 500, "Outdoor", "Exhibition", true);
+
             insertEventRow("John", "Comedy Night", "Kevin Hart", Date.valueOf("2024-08-22"),
                     "7pm", 2, 200, "Indoor", "Comedy", false);
             insertEventRow("Steve", "Tech Talk", "Elon Musk", Date.valueOf("2024-09-30"),
                     "4pm", 1, 1000, "Online", "Conference", false);
             insertEventRow("Sarah", "Food Fest", "Gordon Ramsay", Date.valueOf("2024-04-12"),
                     "11am", 8, 3000, "Outdoor", "Festival", false);
-            insertEventRow("Linda", "Book Launch", "J.K. Rowling", Date.valueOf("2024-07-18"),
-                    "3pm", 2, 150, "Indoor", "Literature", true);
-            insertEventRow("Mark", "Science Expo", "Neil deGrasse Tyson", Date.valueOf("2024-10-25"),
-                    "10am", 6, 1200, "Outdoor", "Educational", true);
+
+
             insertEventRow("Anna", "Fashion Show", "Gigi Hadid", Date.valueOf("2024-09-09"),
                     "5pm", 3, 700, "Indoor", "Fashion", false);
-            insertEventRow("David", "Gaming Championship", "Ninja", Date.valueOf("2024-11-14"),
-                    "9am", 10, 5000, "Online", "Esports", true);
+
             insertEventRow("Emily", "Opera Night", "Andrea Bocelli", Date.valueOf("2024-12-20"),
                     "7pm", 3, 800, "Indoor", "Music", false);
 

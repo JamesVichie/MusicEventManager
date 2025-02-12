@@ -17,7 +17,7 @@ public class Orders implements Serializable {
     private float commission;
 
 
-    public Orders(int orderID, String eventName, String venueName, Date orderDate, int duration, float price, float commission) {
+    public Orders(int orderID, String eventName, String venueName, Date orderDate, int duration, float price, float commission, String clientName) {
         this.orderID = orderID;
         this.eventName = eventName;
         this.venueName = venueName;
@@ -25,16 +25,18 @@ public class Orders implements Serializable {
         this.duration = duration;
         this.price = price;
         this.commission = commission;
+        this.clientName = clientName;
 
     }
 
-    public Orders(String eventName, String venueName, Date orderDate, int duration, float price, float commission) {
+    public Orders(String eventName, String venueName, Date orderDate, int duration, float price, float commission, String clientName) {
         this.eventName = eventName;
         this.venueName = venueName;
         this.orderDate = orderDate;
         this.duration = duration;
         this.price = price;
         this.commission = commission;
+        this.clientName = clientName;
 
     }
 
